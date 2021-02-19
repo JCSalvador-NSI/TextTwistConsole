@@ -47,6 +47,17 @@ void ResetVarPerRound()
     }
     wordListSize = wordsCurrent.size();
 }
+bool MoveToNextRound()
+{
+    ++roundCount;
+    if (roundCount > 3)
+    {
+        roundCount = 1;
+        //returns false, moves to next level instead
+        return false;
+    }
+    return true;
+}
 
 int main()
 {
@@ -85,12 +96,7 @@ int main()
                 transform(input.begin(), input.end(), input.begin(), ::tolower);
                 if (input.compare(pass) == 0)
                 {
-                    ++roundCount;
-                    if (roundCount > 3)
-                    {
-                        roundCount = 1;
-                        loop = false;
-                    }
+                    loop = MoveToNextRound();
                 }
                 else
                 {
@@ -106,7 +112,7 @@ int main()
                         if (wordListSize < 1)
                         {
                             cout << "You guessed all the correct words! Moving on.." << endl;
-                            loop = false;
+                            loop = MoveToNextRound();
                         }
                     }
                     else
