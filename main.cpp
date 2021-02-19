@@ -43,44 +43,52 @@ int main()
     transform(selection.begin(), selection.end(), selection.begin(), ::tolower);
     if (selection.compare("yes") == 0)
     {
-        // Reset vars
-        ResetVars();
-
-        cout << "Okay " + name + ", let's go to the EASY Round!" << endl;
-        system("cls");
-        while (loop)
+        while (level <= 25)
         {
             system("cls");
-            cout << "Round 1: " << word << endl;
-            cout << "Tip: You have " << wordsEasy.size() << " three-letter words left to guess. Type \"" << pass << "\" to move on to the next round. Goodluck!" << endl;
-            cout << "Your current score is: " << score << endl;
-            cout << "Unlocked words: " << constWordUnlocked << endl << endl;
-            cout << "Type your guess here: ";
-            cin >> input;
-            transform(input.begin(), input.end(), input.begin(), ::tolower);
-            if (input.compare(pass) == 0 || wordsEasy.size() < 1)
+            ResetVars();
+            word = mix_letters(word);
+            cout << "Okay " + name + ", let's go to the EASY Round!" << endl;
+            while (loop)
             {
-                loop = false;
-            }
-            else
-            {
-                if (find_word(wordsEasy, input))
+                system("cls");
+                cout << "Round 1: " << word << endl;
+                cout << "Tip: You have " << wordsEasy.size() << " three-letter words left to guess. Type \"" << pass << "\" to move on to the next round. Goodluck!" << endl;
+                cout << "Your current score is: " << score << endl;
+                cout << "Unlocked words: " << constWordUnlocked << endl << endl;
+                cout << "Type your guess here: ";
+                cin >> input;
+                transform(input.begin(), input.end(), input.begin(), ::tolower);
+                if (input.compare(pass) == 0)
                 {
-                    cout << input << " is one of the answer. You got +1 point!" << endl << endl;
-                    ++score;
-                    if (constWordUnlocked != "")
-                    {
-                        constWordUnlocked = constWordUnlocked + ", ";
-                    }
-                    constWordUnlocked = constWordUnlocked + input;
+                    loop = false;
                 }
                 else
                 {
-                    cout << input << " is not in dictionary! Try again." << endl << endl;
+                    if (find_word(wordsEasy, input))
+                    {
+                        cout << input << " is one of the answer. You got +1 point!" << endl << endl;
+                        ++score;
+                        if (constWordUnlocked != "")
+                        {
+                            constWordUnlocked = constWordUnlocked + ", ";
+                        }
+                        constWordUnlocked = constWordUnlocked + input;
+                        if (wordsEasy.size() < 1)
+                        {
+                            cout << "You guessed all the correct words! Moving on.." << endl;
+                            loop = false;
+                        }
+                    }
+                    else
+                    {
+                        cout << input << " is not in dictionary! Try again." << endl << endl;
+                    }
                 }
             }
+
+            ++level;
         }
-        
 
         cout << "End of program.";
     }
