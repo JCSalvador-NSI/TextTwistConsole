@@ -12,7 +12,7 @@ Words funcWords;
 string name, selection, word, input, pass;
 string constWord, constWordUnlocked;
 int score, level, wordListSize, roundCount;
-bool loop;
+bool loop, newRound;
 vector<string> wordsEasy;
 vector<string> wordsNormal;
 vector<string> wordsHard;
@@ -28,24 +28,29 @@ void ResetVarsPerLevel()
     wordsEasy = funcWords.get_listEasy(level);
     wordsNormal = funcWords.get_listNormal(level);
     wordsHard = funcWords.get_listHard(level);
+    word = mix_letters(constWord);
 }
 void ResetVarPerRound()
 {
-    word = mix_letters(constWord);
-    wordsCurrent.clear();
-    switch (roundCount)
+    cout << "Okay " + name + ", let's go to the " << roundTitle[roundCount-1] << " Round!" << endl;
+    if (newRound)
     {
-        case 1:
-            wordsCurrent = wordsEasy;
-            break;
-        case 2:
-            wordsCurrent = wordsNormal;
-            break;
-        case 3:
-            wordsCurrent = wordsHard;
-            break;
+        word = mix_letters(word);
+        wordsCurrent.clear();
+        switch (roundCount)
+        {
+            case 1:
+                wordsCurrent = wordsEasy;
+                break;
+            case 2:
+                wordsCurrent = wordsNormal;
+                break;
+            case 3:
+                wordsCurrent = wordsHard;
+                break;
+        }
+        wordListSize = wordsCurrent.size();
     }
-    wordListSize = wordsCurrent.size();
 }
 bool MoveToNextRound()
 {
@@ -64,6 +69,7 @@ int main()
     score = 0;
     level = 1;
     roundCount = 1;
+    newRound = true;
     pass = "pass";
 
     cout << "Enter your name: ";
@@ -71,7 +77,7 @@ int main()
     
     system("cls");
     
-    cout << "Hi " + name + "! Ready to play some word puzzle?\nTip: Enter yes to continue. Else, enter no to exit the program." << endl;
+    cout << "Hi " + name + "! Ready to play some word puzzle?\nTip: Enter 'yes' to continue. Else, enter no to exit the program." << endl;
     cout << "Type here: ";
     cin >> selection;
     transform(selection.begin(), selection.end(), selection.begin(), ::tolower);
@@ -82,11 +88,11 @@ int main()
             system("cls");
             ResetVarsPerLevel();
             
-            cout << "Okay " + name + ", let's go to the " << roundTitle[roundCount-1] << " Round!" << endl;
             while (loop)
             {
-                ResetVarPerRound();
                 system("cls");
+                ResetVarPerRound();
+                
                 cout << "Level " << level << " Round " << roundCount << ": " << word << endl;
                 cout << "Tip: You have " << wordListSize << " " << roundLetter[roundCount-1] << "-letter word(s) left to guess. Type \"" << pass << "\" to move on to the next round. Goodluck!" << endl;
                 cout << "Your current score is: " << score << endl;
@@ -96,10 +102,12 @@ int main()
                 transform(input.begin(), input.end(), input.begin(), ::tolower);
                 if (input.compare(pass) == 0)
                 {
+                    newRound = true;
                     loop = MoveToNextRound();
                 }
                 else
                 {
+                    newRound = false;
                     if (find_word(wordsCurrent, input))
                     {
                         cout << input << " is one of the answer. You got +1 point!" << endl << endl;
@@ -109,9 +117,11 @@ int main()
                             constWordUnlocked = constWordUnlocked + ", ";
                         }
                         constWordUnlocked = constWordUnlocked + input;
+                        wordListSize = wordsCurrent.size();
                         if (wordListSize < 1)
                         {
                             cout << "You guessed all the correct words! Moving on.." << endl;
+                            newRound = true;
                             loop = MoveToNextRound();
                         }
                     }
@@ -119,6 +129,7 @@ int main()
                     {
                         cout << input << " is not in dictionary! Try again." << endl << endl;
                     }
+                    //system("pause");
                 }
             }
 
