@@ -8,7 +8,8 @@
 
 using namespace std;
 
-string name, selection, word, input;
+Words funcWords;
+string name, selection, word, input, pass;
 string constWord, constWordUnlocked;
 int score, level;
 bool loop;
@@ -16,17 +17,20 @@ vector<string> wordsEasy;
 vector<string> wordsNormal;
 vector<string> wordsHard;
 
-int main()
+void ResetVars()
 {
-    Words funcWords;
-    score = 0;
-    level = 1;
     loop = true;
     constWord = funcWords.get_word(level);
     constWordUnlocked = "";
     wordsEasy = funcWords.get_listEasy(level);
     wordsNormal = funcWords.get_listNormal(level);
     wordsHard = funcWords.get_listHard(level);
+}
+int main()
+{
+    score = 0;
+    level = 1;
+    pass = "pass";
 
     cout << "Enter your name: ";
     cin >> name;
@@ -39,20 +43,22 @@ int main()
     transform(selection.begin(), selection.end(), selection.begin(), ::tolower);
     if (selection.compare("yes") == 0)
     {
-        word = mix_letters(constWord);
+        // Reset vars
+        ResetVars();
+
         cout << "Okay " + name + ", let's go to the EASY Round!" << endl;
         system("cls");
         while (loop)
         {
             system("cls");
             cout << "Round 1: " << word << endl;
-            cout << "Tip: You have " << wordsEasy.size() << " three-letter words left to guess. Type \"skip\" to move on to the next round. Goodluck!" << endl;
+            cout << "Tip: You have " << wordsEasy.size() << " three-letter words left to guess. Type \"" << pass << "\" to move on to the next round. Goodluck!" << endl;
             cout << "Your current score is: " << score << endl;
             cout << "Unlocked words: " << constWordUnlocked << endl << endl;
             cout << "Type your guess here: ";
             cin >> input;
             transform(input.begin(), input.end(), input.begin(), ::tolower);
-            if (input.compare("skip") == 0)
+            if (input.compare(pass) == 0 || wordsEasy.size() < 1)
             {
                 loop = false;
             }
