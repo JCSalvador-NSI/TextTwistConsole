@@ -25,6 +25,7 @@ void ResetVars()
     wordsEasy = funcWords.get_listEasy(level);
     wordsNormal = funcWords.get_listNormal(level);
     wordsHard = funcWords.get_listHard(level);
+    word = constWord;
 }
 int main()
 {
@@ -43,7 +44,7 @@ int main()
     transform(selection.begin(), selection.end(), selection.begin(), ::tolower);
     if (selection.compare("yes") == 0)
     {
-        while (level <= 25)
+        while (level <= 2)
         {
             system("cls");
             ResetVars();
@@ -52,7 +53,7 @@ int main()
             while (loop)
             {
                 system("cls");
-                cout << "Round 1: " << word << endl;
+                cout << "Level " << level << " Round 1: " << word << endl;
                 cout << "Tip: You have " << wordsEasy.size() << " three-letter words left to guess. Type \"" << pass << "\" to move on to the next round. Goodluck!" << endl;
                 cout << "Your current score is: " << score << endl;
                 cout << "Unlocked words: " << constWordUnlocked << endl << endl;
