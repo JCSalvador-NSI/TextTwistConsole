@@ -7,24 +7,27 @@ class Words
 {
     public:
         int maxWords = 2;
-        vector<string> words = { "VIDEO", "EARTH" };
+        vector<string> words = { "VIDEO", "EARTH", "CODEC" };
 
         vector<vector<string>> wordsEasy =
         {
             { "dev", "die", "doe", "vid" },
-            { "ear", "ate", "the", "tea", "hat", "rat" }
+            { "ear", "ate", "the", "tea", "hat", "rat" },
+            { "code", "doe", "doc" }
         };
 
         vector<vector<string>> wordsNormal =
         {
             { "dive", "dove", "void" },
-            { "heat", "hate", "hear", "rate", "tear" }
+            { "heat", "hate", "hear", "rate", "tear" },
+            { "code", "deco" }
         };
 
         vector<vector<string>> wordsHard =
         {
             { "video" },
-            { "earth", "heart" }
+            { "earth", "heart" },
+            { "codec" }
         };
 
         string get_word(int level)
